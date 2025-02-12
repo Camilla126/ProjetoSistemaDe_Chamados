@@ -3,6 +3,7 @@ import { auth, db } from '../firebaseConnection'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc, setDoc } from "firebase/firestore"
 
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext({});
@@ -40,6 +41,7 @@ function AuthProvider({ children }) {
                         setUser(data)
                         storageUser(data)
                         setLoadingAuth(false)
+                        toast.success("Seja bem-vindo ao sistema")
                         navigate("/dashboard")
                     })
 
