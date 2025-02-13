@@ -8,13 +8,13 @@ export default function SignIn() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { signIn } = useContext(AuthContext)
+    const { signIn, loadingAuth } = useContext(AuthContext)
 
-    function handleSignIn(e) {
+    async function handleSignIn(e) {
         e.preventDefault();
 
         if (email !== '' && password !== '') {
-            signIn()
+            await signIn()
         }
 
     }
@@ -40,7 +40,7 @@ export default function SignIn() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <button type="submit">Acessar</button>
+                    <button type="submit">{loadingAuth ? "Carregando" : "Acessar"}</button>
                 </form>
 
                 <Link to="/register">Criar uma conta</Link>
