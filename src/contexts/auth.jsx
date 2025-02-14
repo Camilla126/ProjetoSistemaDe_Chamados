@@ -15,6 +15,24 @@ function AuthProvider({ children }) {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        async function loadUser() {
+            const storageUser = localStorage.getItem('@ticketsPRO')
+
+            if (storageUser) {
+                setUser(JSON.parse(storageUser))
+                setLoading(false)
+            }
+
+
+            setLoading(false)
+
+        }
+
+        loadUser()
+    }, [])
+
+
     async function signIn(email, password) {
         setLoadingAuth(true);
 
