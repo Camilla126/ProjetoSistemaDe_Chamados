@@ -1,25 +1,27 @@
-import { useState, createContext, useEffect } from 'react'
-import { auth, db } from '../firebaseConnection'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc, setDoc } from "firebase/firestore"
+import { useState, createContext, useEffect } from 'react';
+import { auth, db } from '../firebaseConnection';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 export const AuthContext = createContext({});
 
-
 function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
-    const [loadingAuth, setLoadingAuth] = useState(false)
-    const navigate = useNavigate()
+    const [loadingAuth, setLoadingAuth] = useState(false);
+    const [loading, setLoading] = useState(true)
+
+    const navigate = useNavigate();
 
     async function signIn(email, password) {
-        setLoadingAuth(true)
+        setLoadingAuth(true);
 
         await signInWithEmailAndPassword(auth, email, password)
             .then(async (value) => {
-                let uid = value.user.uid
+                let uid = value.user.uid;
+
                 const docRef = doc(db, "users", uid);
                 const docSnap = await getDoc(docRef)
 
@@ -29,24 +31,25 @@ function AuthProvider({ children }) {
                     email: value.user.email,
                     avatarUrl: docSnap.data().avatarUrl
                 }
+
                 setUser(data);
-                storageUser(data)
-                setLoadingAuth(false)
+                storageUser(data);
+                setLoadingAuth(false);
                 toast.success("Bem-vindo(a) de volta!")
                 navigate("/dashboard")
-
             })
             .catch((error) => {
                 console.log(error);
-                setLoadingAuth(false)
-                toast.error("Ops algo deu errado!")
+                setLoadingAuth(false);
+                toast.error("Ops algo deu errado!");
             })
-
 
     }
 
+
+
     async function signUp(email, password, name) {
-        setLoadingAuth(true)
+        setLoadingAuth(true);
 
         await createUserWithEmailAndPassword(auth, email, password)
             .then(async (value) => {
@@ -56,29 +59,32 @@ function AuthProvider({ children }) {
                     nome: name,
                     avatarUrl: null
                 })
-
                     .then(() => {
+
                         let data = {
                             uid: uid,
                             nome: name,
                             email: value.user.email,
                             avatarUrl: null
+                        };
 
-                        }
-                        setUser(data)
-                        storageUser(data)
-                        setLoadingAuth(false)
-                        toast.success("Seja bem-vindo ao sistema")
+                        setUser(data);
+                        storageUser(data);
+                        setLoadingAuth(false);
+                        toast.success("Seja bem-vindo ao sistema!")
                         navigate("/dashboard")
+
                     })
+
 
             })
             .catch((error) => {
-                console.log(error)
-                setLoadingAuth(false)
+                console.log(error);
+                setLoadingAuth(false);
             })
 
     }
+
 
     function storageUser(data) {
         localStorage.setItem('@ticketsPRO', JSON.stringify(data))
@@ -91,9 +97,9 @@ function AuthProvider({ children }) {
                 user,
                 signIn,
                 signUp,
-                loadingAuth
+                loadingAuth,
+                loading
             }}
-
         >
             {children}
         </AuthContext.Provider>
