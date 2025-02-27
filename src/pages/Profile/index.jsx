@@ -10,9 +10,11 @@ import './index.css';
 
 export default function Profile() {
 
-    const { user } = useContext(AuthContext);
+    const { user, storageUser, setUser } = useContext(AuthContext);
 
     const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl)
+    const [nome, setNome] = useState(user && user.nome)
+    const [email, setEmail] = useState(user && user.email)
 
     return (
         <div>
@@ -41,10 +43,10 @@ export default function Profile() {
                         </label>
 
                         <label>Nome</label>
-                        <input type="text" placeholder="Seu nome" />
+                        <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
 
                         <label>Email</label>
-                        <input type="text" placeholder="teste@teste.com" disabled={true} />
+                        <input type="text" value={email} disabled={true} />
 
                         <button type="submit">Salvar</button>
                     </form>
