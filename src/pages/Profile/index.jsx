@@ -10,7 +10,7 @@ import './index.css';
 
 export default function Profile() {
 
-    const { user, storageUser, setUser } = useContext(AuthContext);
+    const { user, storageUser, setUser, logout } = useContext(AuthContext);
 
     const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl)
     const [nome, setNome] = useState(user && user.nome)
@@ -54,7 +54,7 @@ export default function Profile() {
                 </div>
 
                 <div className="container">
-                    <button className="logout-btn">Sair</button>
+                    <button className="logout-btn" onClick={() => logout()}>Sair</button>
                 </div>
 
             </div>
