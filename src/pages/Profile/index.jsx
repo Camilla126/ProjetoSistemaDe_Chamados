@@ -8,6 +8,7 @@ import { AuthContext } from '../../contexts/auth'
 
 import { db, storage } from '../../firebaseConnection'
 import { doc, updateDoc } from 'firebase/firestore'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 import './index.css';
 
@@ -39,6 +40,43 @@ export default function Profile() {
 
     }
 
+    async function handleUpload() {
+        const currentUid = user.uid;
+
+        const uploadRef = ref(storage, `image/${currentUid}/${imageAvatar.name}`)
+
+        const uploadTask = uploadBytes(uploadTask, imageAvatar)
+            .then((snapshot) => {
+
+                getDownloadURL(snapshot.ref).then(async (downloadURL) => {
+                    let urlFoto = downloadURL;
+
+                    const docRef = doc(db, "users", user.uid)
+                    await updateDoc(docRef, {
+                        avatarUrl: urlFoto,
+                        nome: nome,
+                    })
+                        .then(() => {
+                            let data = {
+                                ...user,
+                                nome: nome,
+                                avatar: urlFoto,
+                            }
+
+                            setUser(data);
+                            storageUser(data);
+
+                        })
+
+
+
+                })
+
+
+            })
+
+    }
+
     async function handleSubmit(e) {
         e.preventDefault()
 
@@ -55,6 +93,8 @@ export default function Profile() {
                     setUser(data)
                     storageUser(data)
                 })
+        } else if (nome !== '' && imageAvatar !== null) {
+            handleUpload()
         }
     }
 
