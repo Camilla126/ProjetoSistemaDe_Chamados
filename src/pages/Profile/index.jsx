@@ -10,19 +10,21 @@ import { db, storage } from '../../firebaseConnection'
 import { doc, updateDoc } from 'firebase/firestore'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
+import { toast } from 'react-toastify'
+
 import './index.css';
 
 export default function Profile() {
 
     const { user, storageUser, setUser, logout } = useContext(AuthContext);
-    const [imageAvatar, setImageAvatar] = useState(null)
 
     const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl)
+    const [imageAvatar, setImageAvatar] = useState(null);
+
     const [nome, setNome] = useState(user && user.nome)
     const [email, setEmail] = useState(user && user.email)
 
     function handleFile(e) {
-
         if (e.target.files[0]) {
             const image = e.target.files[0];
 
@@ -31,21 +33,21 @@ export default function Profile() {
                 setAvatarUrl(URL.createObjectURL(image))
             } else {
                 alert("Envie uma imagem do tipo PNG ou JPEG")
-                setImageAvatar(null)
+                setImageAvatar(null);
                 return;
             }
 
+
         }
-
-
     }
+
 
     async function handleUpload() {
         const currentUid = user.uid;
 
-        const uploadRef = ref(storage, `image/${currentUid}/${imageAvatar.name}`)
+        const uploadRef = ref(storage, `images/${currentUid}/${imageAvatar.name}`)
 
-        const uploadTask = uploadBytes(uploadTask, imageAvatar)
+        const uploadTask = uploadBytes(uploadRef, imageAvatar)
             .then((snapshot) => {
 
                 getDownloadURL(snapshot.ref).then(async (downloadURL) => {
@@ -60,27 +62,28 @@ export default function Profile() {
                             let data = {
                                 ...user,
                                 nome: nome,
-                                avatar: urlFoto,
+                                avatarUrl: urlFoto,
                             }
 
                             setUser(data);
                             storageUser(data);
+                            toast.success("Atualizado com sucesso!")
 
                         })
 
-
-
                 })
-
 
             })
 
     }
 
-    async function handleSubmit(e) {
-        e.preventDefault()
 
-        if (imageAvatar === null && nome !== 1) {
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        if (imageAvatar === null && nome !== '') {
+            // Atualizar apenas o nome do user
             const docRef = doc(db, "users", user.uid)
             await updateDoc(docRef, {
                 nome: nome,
@@ -90,13 +93,20 @@ export default function Profile() {
                         ...user,
                         nome: nome,
                     }
-                    setUser(data)
-                    storageUser(data)
+
+                    setUser(data);
+                    storageUser(data);
+                    toast.success("Atualizado com sucesso!")
+
                 })
+
         } else if (nome !== '' && imageAvatar !== null) {
+            // Atualizar tanto nome quanto a foto
             handleUpload()
         }
+
     }
+
 
     return (
         <div>
