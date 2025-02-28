@@ -30,7 +30,9 @@ export default function Profile() {
                 setImageAvatar(null)
                 return;
             }
+
         }
+
 
     }
 
