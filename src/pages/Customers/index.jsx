@@ -8,6 +8,11 @@ export default function Customers() {
     const [cnpj, setCnpj] = useState('')
     const [endereco, setEndereco] = useState('')
 
+
+    function handleRegister(e) {
+        e.preventDefault()
+    }
+
     return (
         <div>
             <Header />
@@ -18,11 +23,25 @@ export default function Customers() {
                 </Title>
 
                 <div className='container'>
-                    <form className='form-profile'>
+                    <form className='form-profile' onSubmit={handleRegister}>
                         <label>Nome fantasia</label>
                         <input
                             type="text"
-                            placeholder='Nome da empresa' />
+                            placeholder='Nome da empresa'
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)} />
+                        <input
+                            type="text"
+                            placeholder='Digite o CNPJ'
+                            value={cnpj}
+                            onChange={(e) => setCnpj(e.target.value)} />
+                        <input
+                            type="text"
+                            placeholder='Endereço da empresa'
+                            value={endereco}
+                            onChange={(e) => setEndereco(e.target.value)} />
+
+                        <button type='submit'>Salvar</button>
                     </form>
                 </div>
 
