@@ -5,7 +5,7 @@ import "./index.css"
 
 import Header from "../../components/Header"
 import Title from "../../components/Title"
-import { FiPlus, FiMessageSquare } from "react-icons/fi"
+import { FiPlus, FiMessageSquare, FiSearch, FiEdit2 } from "react-icons/fi"
 
 import { Link } from "react-router-dom"
 
@@ -27,14 +27,44 @@ export default function Dashboard() {
 
                 <>
 
-                    <Link to="/new">
+                    <Link to="/new" className="new">
                         <FiPlus color="#FFF" size={25} />
                         Novo chamado
                     </Link>
 
-                    <div className="container">
-                        <h1>Teste</h1>
-                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Assunto</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Cadastrando em</th>
+                                <th scope="col">#</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td data-label="Cliente">
+                                    Mercado Esquina
+                                </td>
+                                <td data-label="Assunto">
+                                    Suporte
+                                </td>
+                                <td data-label="Status">
+                                    Em aberto
+                                </td>
+                                <td data-label="Cadastrado">
+                                    12/09
+                                </td>
+
+                                <td data-label="#">
+                                    <button><FiSearch color="#FFF" size={17} style={{ backgroundColor: '#3583f6' }} /></button>
+                                    <button><FiEdit2 color="#FFF" size={17} style={{ backgroundColor: '#f6a935' }} /></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </>
 
             </div>
