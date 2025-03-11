@@ -52,7 +52,11 @@ export default function Dashboard() {
                                     Suporte
                                 </td>
                                 <td data-label="Status">
-                                    Em aberto
+
+                                    <span className="badge" style={{ backgroundColor: '#999' }}>
+                                        Em aberto
+                                    </span>
+
                                 </td>
                                 <td data-label="Cadastrado">
                                     12/09
@@ -63,6 +67,8 @@ export default function Dashboard() {
                                     <button><FiEdit2 color="#FFF" size={17} style={{ backgroundColor: '#f6a935' }} /></button>
                                 </td>
                             </tr>
+
+
                         </tbody>
                     </table>
                 </>
