@@ -30,7 +30,7 @@ export default function New() {
                         </select>
 
                         <label>Status</label>
-                        <div>
+                        <div className="status">
                             <input type="radio" name="radio" value="Aberto" />
                             <span>Em aberto</span>
 
