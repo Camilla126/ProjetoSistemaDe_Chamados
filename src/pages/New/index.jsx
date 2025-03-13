@@ -1,12 +1,19 @@
 import Header from "../../components/Header"
 import Title from '../../components/Title'
 import { FiPlusCircle } from "react-icons/fi"
-import { useState } from "react"
+import { useState, useEffect, useContext } from "react"
+
+import { AuthContext } from "../../contexts/auth"
+import { db } from "../../firebaseConnection"
+import { collection, getDocs, getDoc, doc } from "firebase/firestore"
 
 import './index.css'
 
 export default function New() {
+    const { user } = useContext(AuthContext)
+
     const [customers, setCustomers] = useState([])
+    const [loadCustomer, setLoadCustomer] = useState(true)
 
     const [complemento, setComplemento] = useState('')
     const [assunto, setAssunto] = useState('Suporte')
@@ -14,6 +21,10 @@ export default function New() {
 
     function handleOptionChange(e) {
         setStatus(e.target.value);
+    }
+
+    function handleChangeSelect(e) {
+        setAssunto(e.target.value)
     }
 
     return (
@@ -34,7 +45,7 @@ export default function New() {
                         </select>
 
                         <label>Assunto</label>
-                        <select>
+                        <select value={assunto} onChange={handleChangeSelect}>
                             <option value="Suporte">Suporte</option>
                             <option value="Visita tecnica">Visita Tecnica</option>
                             <option value="Financeiro">Financeira</option>
