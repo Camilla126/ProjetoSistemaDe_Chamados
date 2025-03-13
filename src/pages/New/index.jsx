@@ -8,6 +8,7 @@ import { db } from "../../firebaseConnection"
 import { collection, getDocs, getDoc, doc } from "firebase/firestore"
 
 import './index.css'
+const listRef = collection(db, "customers")
 
 export default function New() {
     const { user } = useContext(AuthContext)
@@ -18,6 +19,23 @@ export default function New() {
     const [complemento, setComplemento] = useState('')
     const [assunto, setAssunto] = useState('Suporte')
     const [status, setStatus] = useState('Aberto')
+
+    useEffect(() => {
+        async function loadCustomers() {
+            const querySnapshot = await getDocs(listRef)
+
+                .then((snapshot) => {
+                    console.log("snapshot")
+                })
+                .catch((error) => {
+                    console.log("ERRO AO BUSCAR CLIENTES", error)
+                    setLoadCustomer(false)
+                    setCustomers([{ id: '1', nomeFantasia: 'FREELA' }])
+                })
+
+        }
+        loadCustomers();
+    }, [])
 
     function handleOptionChange(e) {
         setStatus(e.target.value);
