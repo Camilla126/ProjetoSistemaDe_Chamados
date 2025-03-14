@@ -15,6 +15,7 @@ export default function New() {
 
     const [customers, setCustomers] = useState([])
     const [loadCustomer, setLoadCustomer] = useState(true)
+    const [customerSelected, setCustomerSeelected] = useState(0)
 
     const [complemento, setComplemento] = useState('')
     const [assunto, setAssunto] = useState('Suporte')
@@ -25,10 +26,25 @@ export default function New() {
             const querySnapshot = await getDocs(listRef)
 
                 .then((snapshot) => {
-                    console.log("snapshot")
+
+                    let lista = [];
+
+                    snapshot.forEach((doc) => {
+                        lista.push({
+                            id: doc.id,
+                            nomeFantasia: doc.data().nomeFantasia
+                        })
+                    })
+
+                    if (snapshot.docs.size === 0) {
+                        setCustomers([{ id: '1', nomeFantasia: 'FREELA' }])
+                        setLoadCustomer(false)
+                        return;
+                    }
+
                 })
                 .catch((error) => {
-                    console.log("ERRO AO BUSCAR CLIENTES", error)
+
                     setLoadCustomer(false)
                     setCustomers([{ id: '1', nomeFantasia: 'FREELA' }])
                 })
@@ -45,6 +61,10 @@ export default function New() {
         setAssunto(e.target.value)
     }
 
+    function handleChangeCustomer(e) {
+        setCustomerSeelected(e.target.value)
+    }
+
     return (
         <div>
             <Header />
@@ -57,10 +77,22 @@ export default function New() {
                 <div className="container">
                     <form>
                         <label>Clientes</label>
-                        <select>
-                            <option key={1} value={1}>Mercado</option>
-                            <option key={2} value={2}>Lojaa</option>
-                        </select>
+                        {
+                            loadCustomer ? (
+                                <input type="text" disabled={true} value={"Carregando"} />
+                            ) : (
+                                <select value={customerSelected} onChange={handleChangeCustomer}>
+                                    {customers.map((item, index) => {
+                                        return (
+                                            <option key={index} value={index}></option>
+                                        )
+                                    })}
+
+                                </select>
+                            )
+                        }
+
+
 
                         <label>Assunto</label>
                         <select value={assunto} onChange={handleChangeSelect}>
