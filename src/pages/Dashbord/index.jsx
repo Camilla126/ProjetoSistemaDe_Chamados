@@ -1,5 +1,5 @@
 import { AuthContext } from "../../contexts/auth"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 
 import "./index.css"
 
@@ -11,6 +11,9 @@ import { Link } from "react-router-dom"
 
 export default function Dashboard() {
     const { logout } = useContext(AuthContext)
+
+    const [chamados, setChamados] = useState([])
+    const [loading, setLoading] = useState(true)
 
     async function handleLogout() {
         await logout()
@@ -32,48 +35,67 @@ export default function Dashboard() {
                         Novo chamado
                     </Link>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th scope="col">Cliente</th>
-                                <th scope="col">Assunto</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Cadastrando em</th>
-                                <th scope="col">#</th>
-                            </tr>
-                        </thead>
+                    {chamados.length === 0 ? (
+                        <div className="container dashboard">
+                            <span>Nenhum chamado encontrado...</span>
+                            <Link to="/new" className="new">
+                                <FiPlus color="#FFF" size={25} />
+                                Novo chamado
+                            </Link>
+                        </div>
+                    ) : (
+                        <>
+                            <Link to="/new" className="new">
+                                <FiPlus color="#FFF" size={25} />
+                                Novo chamado
+                            </Link>
 
-                        <tbody>
-                            <tr>
-                                <td data-label="Cliente">
-                                    Mercado Esquina
-                                </td>
-                                <td data-label="Assunto">
-                                    Suporte
-                                </td>
-                                <td data-label="Status">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Cliente</th>
+                                        <th scope="col">Assunto</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Cadastrando em</th>
+                                        <th scope="col">#</th>
+                                    </tr>
+                                </thead>
 
-                                    <span className="badge" style={{ backgroundColor: '#999' }}>
-                                        Em aberto
-                                    </span>
+                                <tbody>
+                                    <tr>
+                                        <td data-label="Cliente">
+                                            Mercado Esquina
+                                        </td>
+                                        <td data-label="Assunto">
+                                            Suporte
+                                        </td>
+                                        <td data-label="Status">
 
-                                </td>
-                                <td data-label="Cadastrado">
-                                    12/09
-                                </td>
+                                            <span className="badge" style={{ backgroundColor: '#999' }}>
+                                                Em aberto
+                                            </span>
 
-                                <td data-label="#">
-                                    <button><FiSearch color="#FFF" size={17} style={{ backgroundColor: '#3583f6' }} /></button>
-                                    <button><FiEdit2 color="#FFF" size={17} style={{ backgroundColor: '#f6a935' }} /></button>
-                                </td>
-                            </tr>
+                                        </td>
+                                        <td data-label="Cadastrado">
+                                            12/09
+                                        </td>
+
+                                        <td data-label="#">
+                                            <button><FiSearch color="#FFF" size={17} style={{ backgroundColor: '#3583f6' }} /></button>
+                                            <button><FiEdit2 color="#FFF" size={17} style={{ backgroundColor: '#f6a935' }} /></button>
+                                        </td>
+                                    </tr>
 
 
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </>
+                    )}
+
+
                 </>
 
             </div>
-        </div>
+        </div >
     )
 }
