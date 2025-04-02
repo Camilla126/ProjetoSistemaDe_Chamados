@@ -103,19 +103,19 @@ export default function Dashboard() {
 
                                 <tbody>
 
-                                    {chamados.map(() => {
+                                    {chamados.map((item, index) => {
                                         return (
-                                            <tr>
+                                            <tr key={index}>
                                                 <td data-label="Cliente">
-                                                    Mercado Esquina
+                                                    {item.cliente}
                                                 </td>
                                                 <td data-label="Assunto">
-                                                    Suporte
+                                                    {item.assunto}
                                                 </td>
                                                 <td data-label="Status">
 
                                                     <span className="badge" style={{ backgroundColor: '#999' }}>
-                                                        Em aberto
+                                                        {item.status}
                                                     </span>
 
                                                 </td>
