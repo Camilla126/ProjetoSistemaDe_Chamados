@@ -20,6 +20,7 @@ export default function Dashboard() {
 
     const [chamados, setChamados] = useState([])
     const [loading, setLoading] = useState(true)
+    const [isEmpty, setIsEmpty] = useState(false)
 
     useEffect(() => {
         async function loadChamados() {
@@ -55,7 +56,7 @@ export default function Dashboard() {
             setChamados(chamados => [...chamados, ...lista])
 
         } else {
-
+            setIsEmpty(true)
         }
     }
 
@@ -101,30 +102,34 @@ export default function Dashboard() {
                                 </thead>
 
                                 <tbody>
-                                    <tr>
-                                        <td data-label="Cliente">
-                                            Mercado Esquina
-                                        </td>
-                                        <td data-label="Assunto">
-                                            Suporte
-                                        </td>
-                                        <td data-label="Status">
 
-                                            <span className="badge" style={{ backgroundColor: '#999' }}>
-                                                Em aberto
-                                            </span>
+                                    {chamados.map(() => {
+                                        return (
+                                            <tr>
+                                                <td data-label="Cliente">
+                                                    Mercado Esquina
+                                                </td>
+                                                <td data-label="Assunto">
+                                                    Suporte
+                                                </td>
+                                                <td data-label="Status">
 
-                                        </td>
-                                        <td data-label="Cadastrado">
-                                            12/09
-                                        </td>
+                                                    <span className="badge" style={{ backgroundColor: '#999' }}>
+                                                        Em aberto
+                                                    </span>
 
-                                        <td data-label="#">
-                                            <button><FiSearch color="#FFF" size={17} style={{ backgroundColor: '#3583f6' }} /></button>
-                                            <button><FiEdit2 color="#FFF" size={17} style={{ backgroundColor: '#f6a935' }} /></button>
-                                        </td>
-                                    </tr>
+                                                </td>
+                                                <td data-label="Cadastrado">
+                                                    12/09
+                                                </td>
 
+                                                <td data-label="#">
+                                                    <button><FiSearch color="#FFF" size={17} style={{ backgroundColor: '#3583f6' }} /></button>
+                                                    <button><FiEdit2 color="#FFF" size={17} style={{ backgroundColor: '#f6a935' }} /></button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
 
                                 </tbody>
                             </table>
