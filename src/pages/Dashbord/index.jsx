@@ -12,6 +12,7 @@ import { collection, getDocs, orderBy, limit, startAfter, query } from "firebase
 import { db } from "../../firebaseConnection"
 import { Link } from "react-router-dom"
 
+import { format } from "date-fns"
 const listRef = collection(db, "chamados")
 
 
@@ -49,6 +50,7 @@ export default function Dashboard() {
                     cliente: doc.data().cliente,
                     clienteId: doc.data().clienteId,
                     created: doc.data().created,
+                    createdFormat: format(doc.data().created.toDate(), 'dd/MM/yyyy'),
                     status: doc.data().status,
                     complemento: doc.data().complemento,
                 })
@@ -120,7 +122,7 @@ export default function Dashboard() {
 
                                                 </td>
                                                 <td data-label="Cadastrado">
-                                                    12/09
+                                                    {item.createdFormat}
                                                 </td>
 
                                                 <td data-label="#">
